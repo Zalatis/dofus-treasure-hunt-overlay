@@ -1,0 +1,32 @@
+{
+  "name": "dofusdb-treasure-hunt",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "keywords": [],
+  "author": "Zalati",
+  "license": "ISC",
+  "description": "DofusDB Treasure Hunt Tool",
+  "devDependencies": {
+    "electron": "^33.2.1",
+    "electron-builder": "^24.5.0"
+  },
+  "build": {
+    "appId": "com.zalati.dofusdb",
+    "productName": "DofusDB Treasure Hunt",
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "assets/icon.ico"
+    },
+    "directories": {
+      "output": "dist"
+    },
+    "icon": "assets/icon.ico"
+  }
+}
