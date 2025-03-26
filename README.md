@@ -19,4 +19,5 @@ Après avoir téléchargé le code source, vous pourrez le compiler vous-même e
 - Ctrl+F3 pour alterner entre les différentes langues (fr, en, pt, es, de)
 - Ctrl+F4 pour alterner entre DofusDB Prod et Beta
 - Ctrl+F12 pour réinitialiser les paramètres
-- Avec l'installateur l'overlay est directement installé dans `%localappdata%\Programs\dofusdb-treasure-hunt` et le fichier config dans `%appdata%\dofusdb-treasure-hunt\settings.json`
+- Ctrl+Shift+I pour ouvrir le DevTools
+- Avec l'installateur l'overlay est directement installé dans `%localappdata%\Programs\dofusdb-treasure-hunt`, le fichier config dans `%appdata%\dofusdb-treasure-hunt\settings.json` et le fichier pour modifier le CSS dans `%appdata%\dofusdb-treasure-hunt\custom.css`

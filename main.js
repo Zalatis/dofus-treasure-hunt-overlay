@@ -1,12 +1,13 @@
-const { app, BrowserWindow, shell, globalShortcut } = require('electron');
+const { app, BrowserWindow, shell, globalShortcut, ipcMain } = require('electron');
 const https = require('https');
 const path = require('path');
 const fs = require('fs');
 
 let mainWindow;
-let latestChromeVersion = '131.0.0.0';  // Fallback default version
+let latestChromeVersion = '135.0.0.0';  // Fallback default version
 
 const settingsFilePath = path.join(app.getPath('userData'), 'settings.json');
+const customCssPath = path.join(app.getPath("userData"), "custom.css");
 const defaultURL = 'https://dofusdb.fr/fr/tools/treasure-hunt';
 const betaURL = 'https://beta.dofusdb.fr/fr/tools/treasure-hunt';
 const availableLanguages = ['fr', 'en', 'pt', 'es', 'de'];
@@ -19,6 +20,28 @@ const defaultConfig = {
     language: defaultLanguage,
     isFrame: true
 };
+
+// Ensure custom.css exists (create empty file if missing)
+function ensureCustomCssExists() {
+    if (!fs.existsSync(customCssPath)) {
+        fs.writeFileSync(customCssPath, "", "utf-8"); // Create an empty file
+        console.log("Created empty custom.css at:", customCssPath);
+    }
+}
+
+// IPC handler to get the path of custom.css
+ipcMain.handle("get-custom-css-path", () => {
+    ensureCustomCssExists(); // Ensure the file exists before returning the path
+    return customCssPath;
+});
+
+// IPC handler to check if custom.css exists
+ipcMain.handle("custom-css-exists", async () => {
+    return fs.existsSync(customCssPath);
+});
+
+// Call function at startup
+ensureCustomCssExists();
 
 // Load configuration from file
 function loadConfig() {
@@ -110,7 +133,10 @@ function createWindow(frame) {
             contextIsolation: true,
             nodeIntegration: false,
             sandbox: false,
-            allowRunningInsecureContent: false
+            allowRunningInsecureContent: false,
+            // Allow loading local files like custom.css
+            webSecurity: false,
+            allowFileAccess: true
         }
     });
 
@@ -237,6 +263,13 @@ app.whenReady().then(async () => {
     // Register the global shortcut for Control+F12 to clear the configuration
     globalShortcut.register('Control+F12', () => {
         clearConfig();
+    });
+
+    // Register the global shortcut for Ctrl+Shift+I to load the DevTools
+    globalShortcut.register('Control+Shift+I', () => {
+        if (mainWindow) {
+            mainWindow.webContents.openDevTools();
+        }
     });
 });
 
