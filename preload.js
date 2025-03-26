@@ -2,7 +2,12 @@ const { ipcRenderer } = require("electron");
 
 window.addEventListener("DOMContentLoaded", async () => {
   // CSS to hide the header
-  document.head.appendChild(Object.assign(document.createElement("link"), { rel: "stylesheet", href: "https://zalati.fr/download/DofusDB-Treasure-Hunt.css" }));
+  document.head.appendChild(
+    Object.assign(document.createElement("link"), {
+      rel: "stylesheet",
+      href: "https://zalati.fr/download/DofusDB-Treasure-Hunt.css",
+    })
+  );
   const customCssPath = await ipcRenderer.invoke("get-custom-css-path");
   const customCssExists = await ipcRenderer.invoke("custom-css-exists");
   const customCSS = `
@@ -53,18 +58,13 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   if (customCssExists) {
     // Load the local custom.css
-    document.head.appendChild(Object.assign(document.createElement("link"), {
+    document.head.appendChild(
+      Object.assign(document.createElement("link"), {
         rel: "stylesheet",
-        href: `file://${customCssPath}`
-    }));
+        href: `file://${customCssPath}`,
+      })
+    );
     console.log("Loaded local custom.css:", customCssPath);
-  } else {
-      // Load the remote CSS as a fallback
-      document.head.appendChild(Object.assign(document.createElement("link"), {
-          rel: "stylesheet",
-          href: remoteCssUrl
-      }));
-      console.log("Loaded remote CSS:", remoteCssUrl);
   }
   console.log("Custom CSS injected");
 });
